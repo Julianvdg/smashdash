@@ -1,9 +1,8 @@
 {
-  "name": "SmashMail-Dashboard",
+  "name": "smashMail-dashboard",
   "description": "Internal Mail Service",
   "main": "app.js",
   "authors": [
-    "Milber Ferreira",
     "Julian van der Giesen"
   ],
   "license": "UNLICENSED",
@@ -19,12 +18,15 @@
     "fastclick": "^1.0.6",
     "nprogress": "^0.2.0",
     "Chart.js": "^2.0.2",
-    "iCheck": "icheck#^1.0.2",
     "bootstrap-daterangepicker": "git@github.com:christianesperar/bootstrap-daterangepicker.git#master",
     "DateJS": "^1.0.0-rc3"
   },
   "resolutions": {
     "jquery": "^2.2.3",
     "fastclick": "^1.0.6"
+  },
+  "dependencies": {
+    "axios": "^0.15.3",
+    "malihu-custom-scrollbar-plugin": "^3.1.5"
   }
 }
