@@ -27,86 +27,82 @@ $('[data-button="generate_graph"]').click(function () {
         var endMoment = moment(endTimestamp);
 
         if ((endMoment.diff(startMoment, 'months')) > 0) {
-
+            return createLabels("Month", startMoment, endMoment);
         } else if ((endMoment.diff(startMoment, 'days')) > 0) {
-            createDayLabels(startMoment, endMoment);
+            return createLabels("Day", startMoment, endMoment);
         } else if ((endMoment.diff(startMoment, 'hours')) > 0) {
-            createHourLabels(startMoment, endMoment);
+            return createLabels("Hour", startMoment, endMoment);
         } else if ((endMoment.diff(startMoment, 'minutes')) > 0) {
-
-        }
-        ;
+            return createLabels("Minute", startMoment, endMoment);
+        };
     }
 
-    function createDayLabels(startDate, endDate) {
-        var startMoment = new moment(startDate);
-        var endMoment = new moment(endDate);
-        var allLabels = [];
-        var startLabel = startMoment.floor(24, 'hours');
-        var endLabel = endMoment.floor(24, 'hours');
+    function createLabels(timeframe, startDate, endDate) {
+      var startMoment = new moment(startDate);
+      var endMoment = new moment(endDate);
+      var allLabels = [];
 
-        // loop till startlabel = endlabel + push into allLables
-        var currDate = startLabel.clone().subtract(1, 'days');
-        var lastDate = endLabel.clone().endOf('day');
+      switch(timeframe) {
+        case "Month":
+            var startLabel = startMoment;
+            var endLabel = endMoment;
 
-        while (currDate.add(1, 'days').diff(lastDate) < 0) {
-            allLabels.push(currDate.clone().format('DD-MM-YYYY'));
-        }
-        console.log(allLabels);
+            var currDate = startLabel.clone().subtract(1, 'months');
+            var lastDate = endLabel.clone().endOf('month');
+
+            while (currDate.add(1, 'months').diff(lastDate) < 0) {
+                allLabels.push(currDate.clone().format('MM-YYYY'));
+            }
+
+            break;
+      case "Day":
+          var startLabel = startMoment.floor(24, 'hours');
+          var endLabel = endMoment.floor(24, 'hours');
+
+          // loop till startlabel = endlabel + push into allLables
+          var currDate = startLabel.clone().subtract(1, 'days');
+          var lastDate = endLabel.clone().endOf('day');
+
+          while (currDate.add(1, 'days').diff(lastDate) < 0) {
+              allLabels.push(currDate.clone().format('DD-MM-YYYY'));
+          }
+
+          break;
+      case "Hour":
+          var startLabel = startMoment.floor(1, 'hours');
+          var endLabel = endMoment.floor(1, 'hours');
+
+          // loop till startlabel = endlabel + push into allLables
+          var currDate = startLabel.clone().subtract(1, 'hours');
+          var lastDate = endLabel.clone().endOf('hour');
+
+
+          while (currDate.add(1, 'hours').diff(lastDate) < 0) {
+              allLabels.push(currDate.clone().format('H:mm'));
+          }
+
+          break;
+      case "Minute":
+          var startLabel = startMoment.floor(1, 'minutes');
+          var endLabel = endMoment.floor(1, 'minutes');
+
+          // loop till startlabel = endlabel + push into allLables
+          var currDate = startLabel.clone().subtract(1, 'minutes');
+          var lastDate = endLabel.clone().endOf('minute');
+
+
+          while (currDate.add(1, 'minutes').diff(lastDate) < 0) {
+              allLabels.push(currDate.clone().format('H:mm'));
+          }
+
+          break;
+
+      }
+      return allLabels;
+
     }
 
-    function createHourLabels(startDate, endDate) {
-        var startMoment = new moment(startDate);
-        var endMoment = new moment(endDate);
-        var allLabels = [];
-        var startLabel = startMoment.floor(1, 'hours');
-        var endLabel = endMoment.floor(1, 'hours');
 
-        console.log(startLabel);
-        console.log(endLabel);
-
-        // loop till startlabel = endlabel + push into allLables
-        var currDate = startLabel.clone().subtract(1, 'hours');
-        var lastDate = endLabel.clone().endOf('hour');
-
-        console.log( currDate.add(1, 'hours'));
-
-        while (currDate.add(1, 'hours').diff(lastDate) < 0) {
-            console.log(currDate.clone().format('H:mm'));
-            allLabels.push(currDate.clone().format('H:00'));
-        }
-        console.log(allLabels);
-    }
-
-
-    // createDayLabels(startDateTime, endDateTime);
-    //
-    // if ((moment(endDateTime).diff(moment(startDateTime), 'months')) > 0) {
-    //     console.log("Months");
-    // } else if ((moment(endDateTime).diff(moment(startDateTime), 'days')) > 0) {
-    //     console.log("days");
-    //
-    //     var currDate = moment(startDateTime).clone().subtract(1, 'days');
-    //     var lastDate = moment(endDateTime).clone().endOf('day');
-    //
-    //     while (currDate.add(1, 'days').diff(lastDate) < 0) {
-    //         labels.push(currDate.clone().format('DD-MM-YYYY'));
-    //     }
-    //     console.log(labels);
-    // } else if ((moment(endDateTime).diff(moment(startDateTime), 'hours')) > 0) {
-    //     console.log("hours");
-    //
-    //     var currDate = moment(startDateTime).clone().subtract(1, 'hours');
-    //     var lastDate = moment(endDateTime).clone().endOf('hour');
-    //
-    //     while (currDate.add(1, 'hours').diff(lastDate) < 0) {
-    //         labels.push(currDate.clone().format('H:HH'));
-    //     }
-    //     console.log(labels);
-    //
-    // } else if ((moment(endDateTime).diff(moment(startDateTime), 'minutes')) > 0) {
-    //     console.log("minuten");
-    // };
 
 
     axios.get('http://api.smashmail.nl/event/V1/getEventStatisticByEventProcessor?startDate=' + startDateTime.toISOString() + '&endDate=' + endDateTime.toISOString() + '&eventProcessor=' + eventProcessor + '')
@@ -136,8 +132,11 @@ $('[data-button="generate_graph"]').click(function () {
             });
 
 
+
+
+            console.log(getLabelInterval(startDateTime, endDateTime));
             var chartData = {
-                labels: labels,
+                labels: getLabelInterval(startDateTime, endDateTime),
                 datasets: [{
                     label: "My First dataset",
                     backgroundColor: "rgba(38, 185, 154, 0.31)",
