@@ -129,20 +129,25 @@
                                 <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
                             </div>
                             <div class="clearfix"></div>
-                            <h4>Select filters</h4>
-                            (http://api.smashmail.nl/event/V1/getFiltersForAction?action=MailsPerPlatform)</h4>
+                            <h4>Select Graph type</h4>
                             <div class="form-group">
-                                <div class="checkbox">
-                                    <label class="">
-                                        <input type="checkbox" class="flat" checked="checked">Platform
+                                <div class="radio-inline">
+                                    <label><input type="radio" name="chartTypeRadio" value="line" checked>
+                                        <i class="fa fa-line-chart" aria-hidden="true"></i>
                                     </label>
                                 </div>
-                                <div class="checkbox">
-                                    <label class="">
-                                        <input type="checkbox" class="flat">Recipient
+                                <div class="radio-inline">
+                                    <label><input type="radio" name="chartTypeRadio" value="bar">
+                                        <i class="fa fa-bar-chart" aria-hidden="true"></i>
+                                    </label>
+                                </div>
+                                <div class="radio-inline">
+                                    <label><input type="radio" name="chartTypeRadio" value="pie">
+                                        <i class="fa fa-pie-chart" aria-hidden="true"></i>
                                     </label>
                                 </div>
                             </div>
+                            <br/>
                             <button class="btn btn-primary btn-block" data-button="generate_graph">Generate graph</button>
                         </div>
                     </div>
@@ -151,9 +156,7 @@
                 <div class=" col-lg-8 col-md-12 col-sm-12 col-xs-12">
                     <div class="x_panel">
                         <div class="x_title">
-                            <h2>Line graph
-                                <small>Sessions</small>
-                            </h2>
+                            <div id="chartTitle"><h2>Title<small>- Date</small></h2></div>
                             <div class="clearfix"></div>
                         </div>
                         <div class="x_content">
@@ -199,19 +202,13 @@
 <!-- Custom Theme Scripts -->
 <script src="../dist/scripts/custom.js"></script>
 
-<!-- Chart.js -->
-<script>
-    Chart.defaults.global.legend = {
-        enabled: false
-    };
-</script
+
 
         <!-- bootstrap-daterangepicker -->
 <script>
     $(document).ready(function () {
 
         var cb = function (start, end, label) {
-            console.log(start.toISOString(), end.toISOString(), label);
             $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
         };
 
@@ -252,18 +249,7 @@
         };
         $('#reportrange span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
         $('#reportrange').daterangepicker(optionSet1, cb);
-        $('#reportrange').on('show.daterangepicker', function () {
-            console.log("show event fired");
-        });
-        $('#reportrange').on('hide.daterangepicker', function () {
-            console.log("hide event fired");
-        });
-        $('#reportrange').on('apply.daterangepicker', function (ev, picker) {
-            console.log("apply event fired, start/end dates are " + picker.startDate.format('MMMM D, YYYY') + " to " + picker.endDate.format('MMMM D, YYYY'));
-        });
-        $('#reportrange').on('cancel.daterangepicker', function (ev, picker) {
-            console.log("cancel event fired");
-        });
+
         $('#options1').click(function () {
             $('#reportrange').data('daterangepicker').setOptions(optionSet1, cb);
         });
