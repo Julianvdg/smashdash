@@ -125,8 +125,6 @@ $('[data-button="generate_graph"]').click(function () {
                 return e;
             });
 
-            getPlatformNamesByPlatformIds(uniquePlatforms);
-
             for (var pi = 0; pi < uniquePlatforms.length; pi++) {
                 var color = randomChartColor();
                 var platformId = uniquePlatforms[pi];
@@ -184,27 +182,6 @@ function randomChartColor() {
 };
 
 
-function getPlatformNamesByPlatformIds(platformIds) {
-
-    $.ajax({
-        url : 'http://api.smashmail.nl/platform/V1/getPlatformsByPlatformIds',
-        data : {platformIds:platformIds},
-        type: 'POST',
-        error : function (data, textStatus, jqXHR) {
-            if(data.statusText != "abort")
-                console.log(data);
-        },
-        success : function (data) {
-            console.log(data);
-        }
-    });
-
-};
-
-
-
-
-
 /**
  * Drawing a chart on the canvas based on the following params:
  * @param chartContextId
@@ -224,8 +201,6 @@ function drawGraph(chartContextId, chartType, chartData) {
         type: chartType,
         data: chartData,
     });
-
-    console.log(chart);
 
 }
 

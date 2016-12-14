@@ -18,11 +18,11 @@ gulp.task('scripts', function () {
         'src/scripts/*.js',
     ])
         .pipe(concat('custom.js'))
-        .pipe(gulp.dest('dist/scripts'))
+        .pipe(gulp.dest('docs/scripts'))
         .pipe(rename({suffix: '.min'}))
         .pipe(uglify())
         .pipe(browserSync.stream())
-        .pipe(gulp.dest('dist/scripts'))
+        .pipe(gulp.dest('docs/scripts'))
         .pipe(notify({message: 'Scripts task complete'}));
 });
 
@@ -30,11 +30,11 @@ gulp.task('scripts', function () {
 gulp.task('styles', function () {
     sass('src/styles/custom.scss', {style: 'expanded',})
         .pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1', 'ios 6', 'android 4'))
-        .pipe(gulp.dest('dist/styles'))
+        .pipe(gulp.dest('docs/styles'))
         .pipe(rename({suffix: '.min'}))
         .pipe(cleancss())
         .pipe(browserSync.stream())
-        .pipe(gulp.dest('dist/styles'))
+        .pipe(gulp.dest('docs/styles'))
         .pipe(notify({message: 'Styles task complete'}));
 });
 
@@ -43,7 +43,7 @@ gulp.task('images', function () {
     return gulp.src('src/images/**/*')
         .pipe(cache(imagemin({optimizationLevel: 3, progressive: true, interlaced: true})))
         .pipe(browserSync.stream())
-        .pipe(gulp.dest('dist/images'))
+        .pipe(gulp.dest('docs/images'))
         .pipe(notify({message: 'Images task complete'}));
 });
 
@@ -53,14 +53,14 @@ gulp.task('browser-sync', function () {
         server: {
             baseDir: './'
         },
-        startPath: './dist/index.html'
+        startPath: './docs/index.html'
     });
 });
 
 // Watch
 gulp.task('watch', function () {
     // Watch .html files
-    gulp.watch('dist/*.html', browserSync.reload);
+    gulp.watch('docs/*.html', browserSync.reload);
     // Watch .js files
     gulp.watch('src/scripts/*.js', ['scripts']);
     // Watch .scss files
